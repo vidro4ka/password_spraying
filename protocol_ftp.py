@@ -1,7 +1,11 @@
 import ftplib
 from ftplib import Error
 
-host = ''
+#home
+#host = ""
+
+#for presentation
+host = ""
 user = ''
 secret = ''
 session = False

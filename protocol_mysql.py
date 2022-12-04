@@ -10,7 +10,8 @@ try:
         host="localhost",
         user=user,
         password=secret,
-        database='TestDB'
+        database='TestDB',
+        port=3306
     )
     print("Connected!!!")
     cur = session.cursor()

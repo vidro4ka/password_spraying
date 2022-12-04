@@ -1,13 +1,15 @@
-from winrm import Session
+import winrm
+from requests.exceptions import HTTPError
 
 host = ''
 user = ''
 secret = ''
+try:
+    s = winrm.Session(host, auth=(user, secret))
+    r = s.run_ps('whoami')
+    print(r.std_out)
+    r = s.run_ps('ipconfig')
+    print(r.std_out)
+except(Exception, HTTPError) as error:
+    print(error)
 
-session = Session(host=host,
-                  auth=(user, secret))
-if session:
-    print("Successfully connected!!!")
-    r = session.run_cmd('ipconfig', ['/all'])
-else:
-    print("Something wrong!!!")
