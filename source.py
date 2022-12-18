@@ -231,7 +231,7 @@ class PasswordSpraying:
                         target_line = target_line.rstrip('\n')
                         self.target.append(target_line)
         else:
-            print(Fore.RED + '-> Check targets flags')
+            print(Fore.RED + '-> Check targets flags ')
             sys.exit(1)
 
         if options.singlelogin:
