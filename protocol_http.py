@@ -2,26 +2,24 @@ import requests
 import sys
 from requests.exceptions import HTTPError
 from requests.auth import HTTPBasicAuth
+from colorama import Fore, init
 
-user = "testing_http"
-secret = "l57daf"
+init(autoreset=True)
 
-try:
-    response = requests.get("http://localhost:8080/test_floder", auth=HTTPBasicAuth(username=user, password=secret))
-    stdoutOrigin = sys.stdout
-    sys.stdout = open("output.txt", "w")
 
-    if response.status_code != 200:
-        print("Status code:", response.status_code, "Not connected ;(\n", response.text)
-    else:
-        print("Status code:", response.status_code, "Connected:\n", response.text)
+def con_http(host, user, secret):
+    s = False
+    try:
+        response = requests.get(host, auth=HTTPBasicAuth(username=user, password=secret))
 
-    sys.stdout.close()
-    sys.stdout = stdoutOrigin
-
-    if response.status_code != 200:
-        print("Status code:", response.status_code, "Not connected ;(\n", response.text)
-    else:
-        print("Status code:", response.status_code, "Connected:\n", response.text)
-except(Exception, HTTPError) as error:
-    print("Not connected :(", error)
+        if response.status_code != 200:
+            print(Fore.RED + "-> Status code:", str(response.status_code), "Not connected ;(\n",
+                  str(response.text))
+        elif response.status_code == 200:
+            s = True
+            print(Fore.LIGHTGREEN_EX + "->  host:", str(host), Fore.LIGHTGREEN_EX + "login:", str(user),
+                  Fore.LIGHTGREEN_EX + "password:",
+                  str(secret))
+            print(Fore.LIGHTGREEN_EX + "-> Status code:", str(response.status_code), str(response.text))
+    except(Exception, HTTPError) as error:
+        print(Fore.RED + "-> Not connected :(", str(error))
