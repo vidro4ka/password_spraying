@@ -18,18 +18,18 @@ def con_ftp(host, user, secret):
               str(secret))
         directory = session.nlst()
         print(directory)
-    except Error as error:
+    except Error:
         print(Fore.RED + "->  host:", str(host), Fore.RED + "login:", str(user),
               Fore.RED + "password:",
-              str(secret), "\n", error)
-    except TimeoutError as e:
+              str(secret))
+    except TimeoutError:
         print(Fore.RED + "->  host:", str(host), Fore.RED + "login:", str(user),
               Fore.RED + "password:",
-              str(secret), "\n", e)
-    except socket.gaierror as es:
+              str(secret))
+    except socket.gaierror:
         print(Fore.RED + "->  host:", str(host), Fore.RED + "login:", str(user),
               Fore.RED + "password:",
-              str(secret), "\n", es)
+              str(secret))
     finally:
         if s:
             session.close()

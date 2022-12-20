@@ -21,7 +21,11 @@ def con_smb(name_server, user, secret):
             print('successfully writing in file!\nAnd this is command "dir": ')
             print(smbclient.listdir(name_host))
         except:
-            print(Fore.RED + "error with writing")
+            print(Fore.RED + "->  host:", str(name_server), Fore.RED + "login:", str(user),
+                  Fore.RED + "password:",
+                  str(secret))
         smbclient.delete_session(server=name_server, port=445)
     except:
-        print(colorama.Fore.RED + '-> Something is wrong\n')
+        print(Fore.RED + "->  host:", str(name_server), Fore.RED + "login:", str(user),
+              Fore.RED + "password:",
+              str(secret))

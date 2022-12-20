@@ -13,13 +13,15 @@ def con_http(host, user, secret):
         response = requests.get(host, auth=HTTPBasicAuth(username=user, password=secret))
 
         if response.status_code != 200:
-            print(Fore.RED + "-> Status code:", str(response.status_code), "Not connected ;(\n",
-                  str(response.text))
+            print(Fore.RED + "->  host:", str(host), Fore.RED + "login:", str(user),
+                  Fore.RED + "password:",
+                  str(secret))
         elif response.status_code == 200:
             s = True
             print(Fore.LIGHTGREEN_EX + "->  host:", str(host), Fore.LIGHTGREEN_EX + "login:", str(user),
                   Fore.LIGHTGREEN_EX + "password:",
                   str(secret))
-            print(Fore.LIGHTGREEN_EX + "-> Status code:", str(response.status_code), str(response.text))
-    except(Exception, HTTPError) as error:
-        print(Fore.RED + "-> Not connected :(", str(error))
+    except(Exception, HTTPError):
+        print(Fore.RED + "->  host:", str(host), Fore.RED + "login:", str(user),
+              Fore.RED + "password:",
+              str(secret))

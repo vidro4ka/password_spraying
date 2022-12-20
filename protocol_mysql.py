@@ -4,6 +4,7 @@ from colorama import Fore, init
 
 init(autoreset=True)
 
+
 def con_msql(host, user, secret, datab_name):
     s = False
     try:
@@ -14,7 +15,8 @@ def con_msql(host, user, secret, datab_name):
             database=datab_name,
             port=3306
         )
-        print(Fore.LIGHTGREEN_EX + "->  host:", str(host), Fore.LIGHTGREEN_EX + "database name:", str(datab_name), Fore.LIGHTGREEN_EX + "login:", str(user),
+        print(Fore.LIGHTGREEN_EX + "->  host:", str(host), Fore.LIGHTGREEN_EX + "database name:", str(datab_name),
+              Fore.LIGHTGREEN_EX + "login:", str(user),
               Fore.LIGHTGREEN_EX + "password:",
               str(secret))
         s = True
@@ -24,8 +26,11 @@ def con_msql(host, user, secret, datab_name):
         version = cur.fetchone()
 
         print("Database version: {}".format(version[0]))
-    except (Exception, mysql.connector.Error) as error:
-        print(Fore.RED + "-> Something wrong: \n", str(error))
+    except (Exception, mysql.connector.Error):
+        print(Fore.RED + "->  host:", str(host), Fore.RED + "database name:", str(datab_name),
+              Fore.RED + "login:", str(user),
+              Fore.RED + "password:",
+              str(secret))
     finally:
         if s:
             session.close()

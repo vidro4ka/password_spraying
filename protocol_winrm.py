@@ -16,5 +16,7 @@ def con_winrm(host, user, secret):
         print(r.std_out)
         r = s.run_ps('ipconfig')
         print(r.std_out)
-    except(Exception, HTTPError) as error:
-        print(Fore.RED + "-> Something is wrong", str(error))
+    except(Exception, HTTPError):
+        print(Fore.RED + "->  host:", str(host), Fore.RED + "login:", str(user),
+              Fore.RED + "password:",
+              str(secret))

@@ -186,10 +186,9 @@ class PasswordSpraying:
             print(Fore.RED + '-> you should set database name')
         elif not (options.singlelogin and options.filelogin) and not (options.singlepas and options.filepas):
             if ((options.singlelogin or options.filelogin) and (
-                    options.singlepas or options.filepas) and not options.combofile) and (
-                    not (options.singlelogin and options.filelogin) or not (
-                    options.singlepas and options.filepas) and not (
-                    options.singlepas or options.filepas) and options.combofile):
+                    options.singlepas or options.filepas) and not options.combofile) or (
+                    not (options.singlelogin and options.filelogin) and not (
+                    options.singlepas and options.filepas) and options.combofile):
                 if options.singleTarget and not options.targetFile:
                     self.singleMode = True
                     self.func_target(options)
@@ -243,7 +242,7 @@ class PasswordSpraying:
                 for log_line in f:
                     log_line = log_line.rstrip('\n')
                     self.log.append(log_line)
-        elif not options.singlelogin and not options.filelogin:
+        elif not options.singlelogin and not options.filelogin and not options.combofile:
             checker = False
             print(Fore.RED + '-> Check login flags')
             sys.exit(1)
@@ -257,7 +256,7 @@ class PasswordSpraying:
                 for pas_line in f:
                     pas_line = pas_line.rstrip('\n')
                     self.pas.append(pas_line)
-        elif not options.singlepas and not options.filepas:
+        elif not options.singlepas and not options.filepas and not options.combofile:
             checker = False
             print(Fore.RED + '-> Check passwords flags')
             sys.exit(1)
@@ -280,20 +279,20 @@ class PasswordSpraying:
 
         q_hosts = Queue()
 
-        for x in self.target:
-            q_hosts.put(x)
-
         targets_num = int(len(self.target))
 
         match self.protocol:
             case 'ftp':
-                for x in range(1, targets_num + 1):
+                for x in range(0, targets_num):
+                    q_hosts.put(self.target[x])
                     Thread(target=q_ftp,
                            args=(q_hosts, self.log, self.pas, self.singlelog, self.singlepas)).start()
                     sleep(5)
+                q_hosts.join()
 
             case 'http':
-                for x in range(1, targets_num + 1):
+                for x in range(0, targets_num):
+                    q_hosts.put(self.target[x])
                     Thread(target=q_http,
                            args=(q_hosts, self.log, self.pas, self.singlelog, self.singlepas)).start()
                     sleep(5)
@@ -302,37 +301,47 @@ class PasswordSpraying:
                 q_dbnames = Queue()
                 for y in self.dbname:
                     q_dbnames.put(y)
-                for x in range(1, targets_num + 1):
+                for x in range(0, targets_num):
+                    q_hosts.put(self.target[x])
                     Thread(target=q_mysql,
                            args=(q_hosts, self.log, self.pas, self.singlelog, self.singlepas, q_dbnames)).start()
                     sleep(5)
+                q_hosts.join()
 
             case 'postgresql':
                 q_dbnames = Queue()
                 for y in self.dbname:
                     q_dbnames.put(y)
-                for x in range(1, targets_num + 1):
+                for x in range(0, targets_num):
+                    q_hosts.put(self.target[x])
                     Thread(target=q_postgresql,
                            args=(q_hosts, self.log, self.pas, self.singlelog, self.singlepas, q_dbnames)).start()
                     sleep(5)
+                q_hosts.join()
 
             case 'smb':
-                for x in range(1, targets_num + 1):
+                for x in range(0, targets_num):
+                    q_hosts.put(self.target[x])
                     Thread(target=q_smb,
                            args=(q_hosts, self.log, self.pas, self.singlelog, self.singlepas)).start()
                     sleep(5)
+                q_hosts.join()
 
             case 'ssh':
-                for x in range(1, targets_num + 1):
+                for x in range(0, targets_num):
+                    q_hosts.put(self.target[x])
                     Thread(target=q_ssh,
                            args=(q_hosts, self.log, self.pas, self.singlelog, self.singlepas)).start()
                     sleep(5)
+                q_hosts.join()
 
             case 'winrm':
-                for x in range(1, targets_num + 1):
+                for x in range(0, targets_num):
+                    q_hosts.put(self.target[x])
                     Thread(target=q_winrm,
                            args=(q_hosts, self.log, self.pas, self.singlelog, self.singlepas)).start()
                     sleep(5)
+                q_hosts.join()
             case _:
                 print(Fore.RED + "-> protocol doesn't exist")
                 sys.exit(1)

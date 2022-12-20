@@ -5,6 +5,7 @@ from colorama import Fore, init
 
 init(autoreset=True)
 
+
 def con_psgrsql(host, user, secret, datab_name):
     global session, cursor
     s = False
@@ -20,8 +21,11 @@ def con_psgrsql(host, user, secret, datab_name):
               str(secret))
         cursor = session.cursor()
         print("-> Some info about PostgreSQL: \n", session.get_dsn_parameters(), "\n")
-    except (Exception, Error) as error:
-        print(colorama.Fore.RED + "-> Error with PostgreSQL: ", str(error))
+    except (Exception, Error):
+        print(Fore.RED + "->  host:", str(host), Fore.RED + "database name:", str(datab_name),
+              Fore.RED + "login:", str(user),
+              Fore.RED + "password:",
+              str(secret))
     finally:
         if s:
             cursor.close()

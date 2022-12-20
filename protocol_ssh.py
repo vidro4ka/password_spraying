@@ -1,6 +1,4 @@
-# completed
 import time
-
 import colorama
 import paramiko
 from paramiko import SSHException
@@ -28,8 +26,10 @@ def con_ssh(host, user, secret):
         output = channel_1.recv(5000)
         print(output.decode())
         s = True
-    except (Exception, SSHException) as error:
-        print(colorama.Fore.RED + "-> Something wrong!!!", str(error))
+    except (Exception, SSHException):
+        print(Fore.RED + "->  host:", str(host), Fore.RED + "login:", str(user),
+              Fore.RED + "password:",
+              str(secret))
     finally:
         if s:
             client.close()
