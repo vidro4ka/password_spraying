@@ -126,6 +126,7 @@ def finisher():
     print("------------------------------------")
     print("password spraying has been completed")
     print("------------------------------------")
+    sys.exit(0)
 
 
 class PasswordSpraying:
@@ -146,6 +147,14 @@ class PasswordSpraying:
 
     def startup(self):
         print(self.info)
+        print('Supported protocols:')
+        print('[*] - ftp')
+        print('[*] - http')
+        print('[*] - mysql')
+        print('[*] - postgresql')
+        print('[*] - smb')
+        print('[*] - ssh')
+        print('[*] - winrm\n')
 
         usage = '{} [-p protocol] [-i singleTarget] [-up singleLogPas]'.format(sys.argv[0])
 
@@ -185,10 +194,9 @@ class PasswordSpraying:
         elif (options.protocol == 'mysql' or options.protocol == 'postgesql') and not options.dbname:
             print(Fore.RED + '-> you should set database name')
         elif not (options.singlelogin and options.filelogin) and not (options.singlepas and options.filepas):
-            if ((options.singlelogin or options.filelogin) and (
-                    options.singlepas or options.filepas) and not options.combofile) or (
-                    not (options.singlelogin and options.filelogin) and not (
-                    options.singlepas and options.filepas) and options.combofile):
+            file_cond = ((options.singlelogin or options.filelogin) and (
+                    options.singlepas or options.filepas)) and not options.combofile
+            if (options.combofile and not file_cond) or file_cond:
                 if options.singleTarget and not options.targetFile:
                     self.singleMode = True
                     self.func_target(options)
@@ -211,7 +219,8 @@ class PasswordSpraying:
     def func_target(self, options):
 
         self.protocol = options.protocol
-        checker = True
+        checker_log = False
+        checker_pas = False
 
         if self.singleMode:
             self.target.append(str(options.singleTarget))
@@ -236,32 +245,37 @@ class PasswordSpraying:
         if options.singlelogin:
             self.log.append(str(options.singlelogin))
             self.singlelog = True
+            checker_log = True
         elif options.filelogin:
+            checker_log = True
             path_log = str(options.filelogin)
             with open(path_log, mode='r') as f:
                 for log_line in f:
                     log_line = log_line.rstrip('\n')
                     self.log.append(log_line)
         elif not options.singlelogin and not options.filelogin and not options.combofile:
-            checker = False
             print(Fore.RED + '-> Check login flags')
             sys.exit(1)
 
         if options.singlepas:
             self.pas.append(str(options.singlepas))
             self.singlepas = True
+            checker_pas = True
         elif options.filepas:
+            checker_pas = True
             path_pas = str(options.filepas)
             with open(path_pas, mode='r') as f:
                 for pas_line in f:
                     pas_line = pas_line.rstrip('\n')
                     self.pas.append(pas_line)
         elif not options.singlepas and not options.filepas and not options.combofile:
-            checker = False
+            checker_pas = False
             print(Fore.RED + '-> Check passwords flags')
             sys.exit(1)
 
-        if options.combofile:
+        if options.combofile and not checker_log and not checker_pas:
+            checker_log = True
+            checker_pas = True
             path = str(options.combofile)
             with open(path, mode='r') as f:
                 for line in f:
@@ -269,10 +283,11 @@ class PasswordSpraying:
                     splt_line = line.split()
                     self.log.append(splt_line[0])
                     self.pas.append(splt_line[1])
-        elif not checker and not options.combofile:
+        elif checker_log and checker_pas and options.combofile:
             print(Fore.RED + '-> Check flags')
+            sys.exit(1)
 
-        if checker:
+        if checker_log and checker_pas:
             self.pas_spray()
 
     def pas_spray(self):
@@ -345,10 +360,9 @@ class PasswordSpraying:
             case _:
                 print(Fore.RED + "-> protocol doesn't exist")
                 sys.exit(1)
+        finisher()
 
 
 if __name__ == '__main__':
     ps = PasswordSpraying()
     ps.startup()
-    finisher()
-    sys.exit(0)
