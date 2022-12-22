@@ -1,4 +1,5 @@
 import sys
+import os
 import protocol_ftp
 import protocol_http
 import protocol_mysql
@@ -126,7 +127,7 @@ def finisher():
     print("------------------------------------")
     print("password spraying has been completed")
     print("------------------------------------")
-    sys.exit(0)
+    os._exit(0)
 
 
 class PasswordSpraying:
